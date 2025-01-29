@@ -14,7 +14,7 @@ function refreshRevengeIdeas() {
   ];
 
   const listElement = document.getElementById('revenge-ideas-list');
-  const sectionElement = document.getElementById('revenge-ideas-section'); // Assuming you have a wrapper div
+  const sectionElement = document.getElementById('revenge-ideas-section'); // Wrapper div
 
   listElement.innerHTML = ''; // Clear the current list
 
@@ -23,16 +23,22 @@ function refreshRevengeIdeas() {
   shuffledIdeas.forEach(idea => {
     const listItem = document.createElement('li');
     listItem.textContent = idea;
-    listItem.style.padding = "5px 0";
-    listItem.style.listStyle = "none";
+    
+    // Style each list item for separation
+    listItem.style.padding = "12px";
+    listItem.style.margin = "8px 0"; // Adds spacing between items
+    listItem.style.borderRadius = "8px";
+    listItem.style.backgroundColor = "#FFF5D1"; // Lighter yellow for contrast
+    listItem.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.1)";
+
     listElement.appendChild(listItem);
   });
 
   // Style the whole section
-  sectionElement.style.padding = "15px";
-  sectionElement.style.margin = "10px 0";
+  sectionElement.style.padding = "20px";
+  sectionElement.style.margin = "15px 0";
   sectionElement.style.borderRadius = "10px";
-  sectionElement.style.backgroundColor = "#ffeb3b"; // Bright yellow
+  sectionElement.style.backgroundColor = "#FFFA90"; // Faded bright yellow
   sectionElement.style.fontWeight = "bold";
   sectionElement.style.boxShadow = "3px 3px 15px rgba(0, 0, 0, 0.2)";
   sectionElement.style.textAlign = "center";

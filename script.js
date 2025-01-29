@@ -24,13 +24,6 @@ document.getElementById('revenge-form').addEventListener('submit', function(even
 
   // Update the display
   displayRevengeFolders();
-
-  // Show the congratulations message
-  const congratulationsMessage = document.getElementById('congratulations-message');
-  congratulationsMessage.style.display = 'block';
-  setTimeout(() => {
-    congratulationsMessage.style.display = 'none';
-  }, 2000);
 });
 
 // Display revenges function
@@ -107,37 +100,4 @@ function closeRevenge(personName, index) {
 function addAnotherRevenge(personName) {
   document.getElementById('person-name').value = personName;
   document.getElementById('revenge-plan').focus();
-}
-
-// Function to refresh revenge ideas
-function refreshRevengeIdeas() {
-  const revengeIdeas = [
-    "Superglue their keyboard keys",
-    "Replace their shampoo with hair dye",
-    "Hide their phone and pretend it's lost",
-    "Send them fake love letters from a made-up admirer",
-    "Put a piece of tape over their computer mouse sensor",
-    "Change their alarm to go off every hour",
-    "Send them a package with a 'wrong address' note",
-    "Fill their shoes with small pebbles",
-    "Leave random sticky notes around their house with confusing messages",
-    "Swap their regular pen with a disappearing ink pen"
-  ];
-
-  // Randomly shuffle the revenge ideas array
-  const shuffledIdeas = revengeIdeas.sort(() => 0.5 - Math.random());
-
-  // Select only the first 5 ideas from the shuffled list
-  const fiveIdeas = shuffledIdeas.slice(0, 5);
-
-  // Get the UL element and clear the current list
-  const revengeIdeasList = document.getElementById('revenge-ideas-list');
-  revengeIdeasList.innerHTML = '';
-
-  // Append the 5 randomly selected revenge ideas to the list
-  fiveIdeas.forEach(idea => {
-    const listItem = document.createElement('li');
-    listItem.textContent = idea;
-    revengeIdeasList.appendChild(listItem);
-  });
 }

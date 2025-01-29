@@ -24,6 +24,13 @@ document.getElementById('revenge-form').addEventListener('submit', function(even
 
   // Update the display
   displayRevengeFolders();
+
+  // Show the congratulations message
+  const congratulationsMessage = document.getElementById('congratulations-message');
+  congratulationsMessage.style.display = 'block';
+  setTimeout(() => {
+    congratulationsMessage.style.display = 'none';
+  }, 2000);
 });
 
 // Display revenges function

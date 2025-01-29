@@ -134,3 +134,56 @@
         color: white;
         border: none;
         font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+      .refresh-button:hover {
+        background-color: #FF4500; /* Bright Red */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Revenge 4U</h1>
+      <p>Your plan for revenge, now organized!</p>
+    </div>
+    
+    <div class="container">
+      <!-- Form Section -->
+      <div class="form-section">
+        <h2>Submit Your Revenge Plan</h2>
+        <form id="revenge-form">
+          <label for="person-name">Person's Name:</label>
+          <input type="text" id="person-name" required>
+          <label for="revenge-plan">Revenge Plan:</label>
+          <textarea id="revenge-plan" rows="4" required></textarea>
+          <label for="revenge-reason">Reason for Revenge:</label>
+          <textarea id="revenge-reason" rows="4" required></textarea>
+          <button type="submit">Submit Revenge Plan</button>
+        </form>
+      </div>
+
+      <!-- Revenge Folders -->
+      <div id="revenge-folders" class="all-revenges-section"></div>
+
+      <!-- Revenge Ideas Section -->
+      <div class="revenge-ideas-section">
+        <h2>Revenge Ideas</h2>
+        <ul>
+          <li>Superglue their keyboard keys</li>
+          <li>Replace their shampoo with hair dye</li>
+          <li>Hide their phone and pretend it's lost</li>
+          <li>Send them fake love letters from a made-up admirer</li>
+        </ul>
+        <button class="refresh-button" onclick="window.location.reload()">Refresh Ideas</button>
+      </div>
+
+      <!-- Congratulations Message -->
+      <div id="congratulations-message" class="congratulations-message">
+        <p>Congratulations! You successfully submitted a revenge plan.</p>
+      </div>
+    </div>
+
+    <script src="revenge.js"></script>
+  </body>
+</html>

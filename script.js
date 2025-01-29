@@ -118,15 +118,27 @@ function refreshRevengeIdeas() {
     "Change their phone language to something confusing.",
     "Unplug their computer every time they leave it.",
     "Leave a funny note on their desk every morning.",
-    "Swap their favorite snacks with something gross."
+    "Swap their favorite snacks with something gross.",
+    "Fill their shoes with cotton balls.",
+    "Replace their sugar with salt.",
+    "Schedule a meeting on their behalf at 7 AM.",
+    "Cover their chair in plastic wrap.",
+    "Hide their phone charger every day."
   ];
 
   const listElement = document.getElementById('revenge-ideas-list');
   listElement.innerHTML = ''; // Clear the current list
 
-  ideas.forEach(idea => {
+  // Pick 5 random ideas and display them
+  const shuffledIdeas = ideas.sort(() => 0.5 - Math.random()).slice(0, 5);
+  shuffledIdeas.forEach(idea => {
     const listItem = document.createElement('li');
     listItem.textContent = idea;
     listElement.appendChild(listItem);
   });
 }
+
+// Event listener for the refresh button
+document.getElementById('refresh-revenges-button').addEventListener('click', function() {
+  refreshRevengeIdeas();
+});

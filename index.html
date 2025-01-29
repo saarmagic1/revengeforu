@@ -16,7 +16,7 @@
         align-items: center;
       }
       .header {
-        background-color: #FF5733; /* Vibrant Orange */
+        background-color: #FF5733;
         color: white;
         text-align: center;
         padding: 20px;
@@ -47,7 +47,7 @@
         padding: 12px;
         margin: 5px 0;
         border-radius: 8px;
-        border: 2px solid #FF5733; /* Orange Border */
+        border: 2px solid #FF5733;
         font-size: 16px;
       }
       .form-section button {
@@ -58,7 +58,7 @@
         font-weight: bold;
       }
       .form-section button:hover {
-        background-color: #FF4500; /* Bright Red */
+        background-color: #FF4500;
       }
       .revenge-list {
         list-style-type: none;
@@ -70,10 +70,10 @@
         margin-bottom: 10px;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-left: 5px solid #FF5733; /* Orange left border */
+        border-left: 5px solid #FF5733;
       }
       .revenge-item button {
-        background-color: #32CD32; /* Lime Green */
+        background-color: #32CD32;
         color: white;
         border: none;
         padding: 8px 12px;
@@ -82,13 +82,13 @@
         border-radius: 5px;
       }
       .revenge-item button:hover {
-        background-color: #28A745; /* Dark Green */
+        background-color: #28A745;
       }
       .revenge-folder {
         padding-left: 20px;
       }
       .folder-header {
-        background-color: #FFD700; /* Bright Yellow */
+        background-color: #FFD700;
         font-weight: bold;
         padding: 15px;
         cursor: pointer;
@@ -100,7 +100,7 @@
         margin-left: 20px;
       }
       .congratulations-message {
-        background-color: #98FB98; /* Pale Green */
+        background-color: #98FB98;
         padding: 15px;
         margin-top: 20px;
         border-radius: 8px;
@@ -110,7 +110,7 @@
         width: 100%;
       }
       .revenge-ideas-section {
-        background-color: #F0E68C; /* Light Yellow */
+        background-color: #F0E68C;
         padding: 15px;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -123,7 +123,7 @@
         padding: 0;
       }
       .revenge-ideas-section li {
-        background-color: #FFF5EE; /* Seashell Color */
+        background-color: #FFF5EE;
         padding: 10px;
         margin: 5px 0;
         border-radius: 8px;
@@ -156,7 +156,7 @@
         <form id="revenge-form">
           <input type="text" id="person-name" placeholder="Person's Name" required><br>
           <textarea id="revenge-plan" placeholder="Describe your revenge..." rows="4" required></textarea><br>
-          <textarea id="revenge-reason" placeholder="Why are you planning this revenge?" rows="4" required></textarea><br>
+          <textarea id="revenge-reason" placeholder="Reason for revenge (optional)" rows="2"></textarea><br>
           <button type="submit">Add Revenge</button>
         </form>
       </div>
@@ -164,19 +164,24 @@
       <!-- Revenge Ideas Section -->
       <div id="revenge-ideas-section" class="ideas-section">
         <h2>Revenge Ideas</h2>
-        <ul>
-          <li>Send them a fake invitation to a party that doesn't exist.</li>
-          <li>Set their alarm to go off at 3 AM every night.</li>
-          <li>Leave mysterious notes around their room.</li>
+        <ul id="revenge-ideas-list">
+          <!-- Initial revenge ideas will be loaded here -->
         </ul>
+        <button class="refresh-button" onclick="refreshRevengeIdeas()">Refresh Ideas</button>
       </div>
 
-      <!-- All Revenges Section -->
-      <div id="revenge-folders" class="all-revenges-section"></div>
-      
-      <!-- Refresh Button -->
-      <button class="refresh-button" onclick="location.reload()">Refresh Page</button>
+      <!-- All Revenges -->
+      <div id="all-revenges-section" class="all-revenges-section">
+        <h2>All Revenges</h2>
+        <div id="revenge-folders"></div>
+      </div>
+
+      <!-- Congratulations Message -->
+      <div id="congratulations-message" class="congratulations-message">
+        Congratulations on completing the revenge! 🎉
+      </div>
     </div>
-  <script src="revenge.js"></script>
+
+    <script src="script.js"></script>
   </body>
 </html>

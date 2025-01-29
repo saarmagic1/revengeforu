@@ -1,4 +1,4 @@
-// Function to refresh the revenge ideas section with better styling
+// Function to refresh and style the revenge ideas section
 function refreshRevengeIdeas() {
   const ideas = [
     "Send them an anonymous package of confetti.",
@@ -14,20 +14,26 @@ function refreshRevengeIdeas() {
   ];
 
   const listElement = document.getElementById('revenge-ideas-list');
+  const sectionElement = document.getElementById('revenge-ideas-section'); // Assuming you have a wrapper div
+
   listElement.innerHTML = ''; // Clear the current list
 
-  // Pick 5 random ideas and display them
+  // Pick 5 random ideas
   const shuffledIdeas = ideas.sort(() => 0.5 - Math.random()).slice(0, 5);
   shuffledIdeas.forEach(idea => {
     const listItem = document.createElement('li');
     listItem.textContent = idea;
-    listItem.style.padding = "10px";
-    listItem.style.margin = "5px 0";
-    listItem.style.borderRadius = "8px";
-    listItem.style.backgroundColor = "#ffcccc";
-    listItem.style.fontWeight = "bold";
+    listItem.style.padding = "5px 0";
     listItem.style.listStyle = "none";
-    listItem.style.boxShadow = "2px 2px 10px rgba(0, 0, 0, 0.2)";
     listElement.appendChild(listItem);
   });
+
+  // Style the whole section
+  sectionElement.style.padding = "15px";
+  sectionElement.style.margin = "10px 0";
+  sectionElement.style.borderRadius = "10px";
+  sectionElement.style.backgroundColor = "#ffeb3b"; // Bright yellow
+  sectionElement.style.fontWeight = "bold";
+  sectionElement.style.boxShadow = "3px 3px 15px rgba(0, 0, 0, 0.2)";
+  sectionElement.style.textAlign = "center";
 }

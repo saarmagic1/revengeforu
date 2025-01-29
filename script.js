@@ -1,3 +1,35 @@
+// Function to handle revenge form submission
+document.getElementById("revenge-form").addEventListener("submit", function(event) {
+  event.preventDefault(); // Prevent the page from refreshing on form submit
+
+  const name = document.getElementById("person-name").value;
+  const plan = document.getElementById("revenge-plan").value;
+  const reason = document.getElementById("revenge-reason").value;
+
+  // Check if both name and revenge plan are entered
+  if (!name || !plan) {
+    alert("Please enter a name and a revenge plan!");
+    return;
+  }
+
+  // Create a new revenge item and display it
+  const revengeList = document.getElementById("revenge-folders");
+  const newRevenge = document.createElement("div");
+  newRevenge.classList.add("revenge-item");
+  newRevenge.innerHTML = `
+    <strong>${name}</strong>: ${plan}
+    ${reason ? `<p>Reason: ${reason}</p>` : ""}
+  `;
+
+  // Append the new revenge item to the list
+  revengeList.appendChild(newRevenge);
+
+  // Clear the form inputs after submission
+  document.getElementById("person-name").value = "";
+  document.getElementById("revenge-plan").value = "";
+  document.getElementById("revenge-reason").value = "";
+});
+
 // Function to refresh and style the revenge ideas section
 function refreshRevengeIdeas() {
   const ideas = [
@@ -23,7 +55,7 @@ function refreshRevengeIdeas() {
   shuffledIdeas.forEach(idea => {
     const listItem = document.createElement('li');
     listItem.textContent = idea;
-    
+
     // Style each list item for separation
     listItem.style.padding = "12px";
     listItem.style.margin = "8px 0"; // Adds spacing between items

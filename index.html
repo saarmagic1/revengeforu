@@ -1,303 +1,189 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Revenge 4U</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Roboto', sans-serif;
-      background-color: #f9f9f9;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .header {
-      background-color: #FF5733; /* Vibrant Orange */
-      color: white;
-      text-align: center;
-      padding: 20px;
-      width: 100%;
-    }
-    h1 {
-      margin: 0;
-      font-size: 36px;
-    }
-    p {
-      font-size: 18px;
-      font-weight: bold;
-    }
-    .container {
-      width: 80%;
-      max-width: 800px;
-      padding: 20px;
-      background-color: white;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-      border-radius: 10px;
-      margin-top: 30px;
-    }
-    .form-section, .ideas-section, .all-revenges-section {
-      margin-bottom: 30px;
-    }
-    .form-section input, .form-section textarea, .form-section button {
-      width: 100%;
-      padding: 12px;
-      margin: 5px 0;
-      border-radius: 8px;
-      border: 2px solid #FF5733; /* Orange Border */
-      font-size: 16px;
-    }
-    .form-section button {
-      background-color: #FF5733;
-      color: white;
-      cursor: pointer;
-      border: none;
-      font-weight: bold;
-    }
-    .form-section button:hover {
-      background-color: #FF4500; /* Bright Red */
-    }
-    .revenge-list {
-      list-style-type: none;
-      padding: 0;
-    }
-    .revenge-item {
-      background-color: #f1f1f1;
-      padding: 15px;
-      margin-bottom: 10px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      border-left: 5px solid #FF5733; /* Orange left border */
-    }
-    .revenge-item button {
-      background-color: #32CD32; /* Lime Green */
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      margin-left: 10px;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-    .revenge-item button:hover {
-      background-color: #28A745; /* Dark Green */
-    }
-    .revenge-folder {
-      padding-left: 20px;
-    }
-    .folder-header {
-      background-color: #FFD700; /* Bright Yellow */
-      font-weight: bold;
-      padding: 15px;
-      cursor: pointer;
-      margin-bottom: 10px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-    .folder-content {
-      margin-left: 20px;
-    }
-    .congratulations-message {
-      background-color: #98FB98; /* Pale Green */
-      padding: 15px;
-      margin-top: 20px;
-      border-radius: 8px;
-      text-align: center;
-      font-size: 18px;
-      display: none;
-      width: 100%;
-    }
-    .revenge-ideas-section {
-      background-color: #F0E68C; /* Light Yellow */
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-    .revenge-ideas-section h2 {
-      color: #FF5733;
-    }
-    .revenge-ideas-section ul {
-      list-style-type: none;
-      padding: 0;
-    }
-    .revenge-ideas-section li {
-      background-color: #FFF5EE; /* Seashell Color */
-      padding: 10px;
-      margin: 5px 0;
-      border-radius: 8px;
-    }
-    .refresh-button {
-      padding: 10px 20px;
-      background-color: #FF5733;
-      color: white;
-      border: none;
-      font-size: 16px;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-    .refresh-button:hover {
-      background-color: #FF4500;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="header">
-    <h1>Revenge 4U</h1>
-    <p>Plan and track your revenge.</p>
-  </div>
-
-  <div class="container">
-    <!-- Add Revenge Form -->
-    <div class="form-section">
-      <h2>Add Revenge</h2>
-      <form id="revenge-form">
-        <input type="text" id="person-name" placeholder="Person's Name" required><br>
-        <textarea id="revenge-plan" placeholder="Describe your revenge..." rows="4" required></textarea><br>
-        <button type="submit">Add Revenge</button>
-      </form>
-    </div>
-
-    <!-- Revenge Ideas Section -->
-    <div id="revenge-ideas-section" class="ideas-section">
-      <h2>Revenge Ideas</h2>
-      <ul id="revenge-ideas-list">
-        <!-- Initial revenge ideas will be loaded here -->
-      </ul>
-      <button class="refresh-button" onclick="refreshRevengeIdeas()">Refresh Ideas</button>
-    </div>
-
-    <!-- All Revenges -->
-    <div id="all-revenges-section" class="all-revenges-section">
-      <h2>All Revenges</h2>
-      <div id="revenge-folders"></div>
-    </div>
-
-    <!-- Congratulations Message -->
-    <div id="congratulations-message" class="congratulations-message">
-      Congratulations on completing the revenge! 🎉
-    </div>
-  </div>
-
-  <script>
-    const revengeForm = document.getElementById('revenge-form');
-    const revengeFolders = document.getElementById('revenge-folders');
-    const revengeIdeasList = document.getElementById('revenge-ideas-list');
-    const congratulationsMessage = document.getElementById('congratulations-message');
-
-    let revenges = {};
-    let revengeIdeasIndex = 0;
-
-    // Expanded list of revenge ideas
-    const revengeIdeas = [
-      "Replace all the pens in their drawer with broken ones.",
-      "Send them an 'anonymous' gift that they won't like.",
-      "Set up a fake meeting and cancel at the last minute.",
-      "Leave them a voicemail with a cryptic message.",
-      "Send them a message pretending to be someone else.",
-      "Give them a box of glitter that explodes when opened.",
-      "Move everything on their desk an inch to the left.",
-      "Hide all their favorite snacks and tell them it's a scavenger hunt.",
-      "Set their alarm 2 hours earlier than usual.",
-      "Write fake notes on their calendar.",
-      "Hide their phone and act confused when they look for it.",
-      "Wrap their car in plastic wrap or sticky notes.",
-      "Send them a 'fake' important email and watch them panic.",
-      "Put fake bugs in their office or room.",
-      "Send them a video of someone saying they're sorry for something they didn't do.",
-      "Change the language on their phone or computer.",
-      "Send them a fake invoice for something absurd.",
-      "Put toothpaste in their shoes.",
-      "Switch their keyboard keys around.",
-      "Give them a calendar full of random holidays they’ve never heard of.",
-      "Create an 'official' certificate for a non-existent achievement and send it to them.",
-      "Print out a fake parking ticket and place it on their car."
-    ];
-
-    // Initially load the revenge ideas
-    loadRevengeIdeas();
-
-    revengeForm.addEventListener('submit', function(event) {
-      event.preventDefault(); // Prevent the form from refreshing the page
-
-      // Get values from form fields
-      const personName = document.getElementById('person-name').value.trim();
-      const revengePlan = document.getElementById('revenge-plan').value.trim();
-
-      if (personName && revengePlan) {
-        // Add the revenge to the corresponding person's list
-        if (!revenges[personName]) {
-          revenges[personName] = [];
-        }
-        revenges[personName].push({ revengePlan, isClosed: false });
-
-        // Display the updated list
-        displayRevengeFolders();
-
-        // Clear the form fields
-        document.getElementById('person-name').value = '';
-        document.getElementById('revenge-plan').value = '';
-      } else {
-        alert('Please fill out both fields!');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revenge 4U</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
       }
-    });
-
-    function displayRevengeFolders() {
-      revengeFolders.innerHTML = ''; // Clear previous content
-
-      for (const personName in revenges) {
-        const personRevengeList = revenges[personName];
-
-        const revengeItem = document.createElement('div');
-        revengeItem.classList.add('revenge-item');
-        revengeItem.dataset.personName = personName;
-        revengeItem.innerHTML = `
-          <h3>${personName}</h3>
-          <span>${personRevengeList[personRevengeList.length - 1].revengePlan}</span>
-          <button onclick="closeRevenge('${personName}', ${personRevengeList.length - 1})">Close Revenge</button>
-        `;
-        revengeFolders.appendChild(revengeItem);
+      .header {
+        background-color: #FF5733; /* Vibrant Orange */
+        color: white;
+        text-align: center;
+        padding: 20px;
+        width: 100%;
       }
-    }
-
-    function closeRevenge(personName, index) {
-      revenges[personName][index].isClosed = true;
-      displayRevengeFolders();
-    }
-
-    function loadRevengeIdeas() {
-      // Load initial revenge ideas
-      const initialIdeas = revengeIdeas.slice(0, 5);
-      initialIdeas.forEach(idea => {
-        const listItem = document.createElement('li');
-        listItem.textContent = idea;
-        revengeIdeasList.appendChild(listItem);
-      });
-    }
-
-    function refreshRevengeIdeas() {
-      // Clear existing ideas
-      revengeIdeasList.innerHTML = '';
-
-      // Load new set of revenge ideas
-      const newIdeas = revengeIdeas.slice(revengeIdeasIndex, revengeIdeasIndex + 5); // Show next 5 ideas
-      newIdeas.forEach(idea => {
-        const listItem = document.createElement('li');
-        listItem.textContent = idea;
-        revengeIdeasList.appendChild(listItem);
-      });
-
-      // Update the index to load the next set of ideas
-      revengeIdeasIndex += 5;
-
-      // If we reach the end, reset to start over
-      if (revengeIdeasIndex >= revengeIdeas.length) {
-        revengeIdeasIndex = 0;
+      h1 {
+        margin: 0;
+        font-size: 36px;
       }
-    }
-  </script>
-  <script src="script.js"></script>
-</body>
+      p {
+        font-size: 18px;
+        font-weight: bold;
+      }
+      .container {
+        width: 80%;
+        max-width: 800px;
+        padding: 20px;
+        background-color: white;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        margin-top: 30px;
+      }
+      .form-section, .ideas-section, .all-revenges-section {
+        margin-bottom: 30px;
+      }
+      .form-section input, .form-section textarea, .form-section button {
+        width: 100%;
+        padding: 12px;
+        margin: 5px 0;
+        border-radius: 8px;
+        border: 2px solid #FF5733; /* Orange Border */
+        font-size: 16px;
+      }
+      .form-section button {
+        background-color: #FF5733;
+        color: white;
+        cursor: pointer;
+        border: none;
+        font-weight: bold;
+      }
+      .form-section button:hover {
+        background-color: #FF4500; /* Bright Red */
+      }
+      .revenge-list {
+        list-style-type: none;
+        padding: 0;
+      }
+      .revenge-item {
+        background-color: #f1f1f1;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-left: 5px solid #FF5733; /* Orange left border */
+      }
+      .revenge-item button {
+        background-color: #32CD32; /* Lime Green */
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        margin-left: 10px;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+      .revenge-item button:hover {
+        background-color: #28A745; /* Dark Green */
+      }
+      .revenge-folder {
+        padding-left: 20px;
+      }
+      .folder-header {
+        background-color: #FFD700; /* Bright Yellow */
+        font-weight: bold;
+        padding: 15px;
+        cursor: pointer;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .folder-content {
+        margin-left: 20px;
+      }
+      .congratulations-message {
+        background-color: #98FB98; /* Pale Green */
+        padding: 15px;
+        margin-top: 20px;
+        border-radius: 8px;
+        text-align: center;
+        font-size: 18px;
+        display: none;
+        width: 100%;
+      }
+      .revenge-ideas-section {
+        background-color: #F0E68C; /* Light Yellow */
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .revenge-ideas-section h2 {
+        color: #FF5733;
+      }
+      .revenge-ideas-section ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      .revenge-ideas-section li {
+        background-color: #FFF5EE; /* Seashell Color */
+        padding: 10px;
+        margin: 5px 0;
+        border-radius: 8px;
+      }
+      .refresh-button {
+        padding: 10px 20px;
+        background-color: #FF5733;
+        color: white;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+      .refresh-button:hover {
+        background-color: #FF4500; /* Bright Red */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Revenge 4U</h1>
+      <p>Your plan for revenge, now organized!</p>
+    </div>
+    
+    <div class="container">
+      <!-- Form Section -->
+      <div class="form-section">
+        <h2>Submit Your Revenge Plan</h2>
+        <form id="revenge-form">
+          <label for="person-name">Person's Name:</label>
+          <input type="text" id="person-name" required>
+          <label for="revenge-plan">Revenge Plan:</label>
+          <textarea id="revenge-plan" rows="4" required></textarea>
+          <label for="revenge-reason">Reason for Revenge:</label>
+          <textarea id="revenge-reason" rows="4" required></textarea>
+          <button type="submit">Submit Revenge Plan</button>
+        </form>
+      </div>
+
+      <!-- Revenge Folders -->
+      <div id="revenge-folders" class="all-revenges-section"></div>
+
+      <!-- Revenge Ideas Section -->
+      <div class="revenge-ideas-section">
+        <h2>Revenge Ideas</h2>
+        <ul id="revenge-ideas-list">
+          <li>Superglue their keyboard keys</li>
+          <li>Replace their shampoo with hair dye</li>
+          <li>Hide their phone and pretend it's lost</li>
+          <li>Send them fake love letters from a made-up admirer</li>
+        </ul>
+        <button class="refresh-button" onclick="refreshRevengeIdeas()">Refresh Ideas</button>
+      </div>
+
+      <!-- Congratulations Message -->
+      <div id="congratulations-message" class="congratulations-message">
+        <p>Congratulations! You successfully submitted a revenge plan.</p>
+      </div>
+    </div>
+
+    <script src="revenge.js"></script>
+  </body>
 </html>

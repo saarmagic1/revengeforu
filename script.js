@@ -82,7 +82,7 @@ function markRevengeCompleted(button, personName) {
   saveRevengeData();
 }
 
-// Function to save revenge data to localStorage
+// Function to save only revenge data to localStorage
 function saveRevengeData() {
   const revengeFolders = document.querySelectorAll('.revenge-folder');
   const revengeData = {};
@@ -91,9 +91,7 @@ function saveRevengeData() {
     const personName = folder.id;
     const revengeItems = folder.querySelectorAll('.revenge-item');
 
-    if (revengeItems.length === 0) {
-      return; // Don't save empty folders
-    }
+    if (revengeItems.length === 0) return; // Don't save empty folders
 
     revengeData[personName] = [];
     revengeItems.forEach(item => {
@@ -106,7 +104,7 @@ function saveRevengeData() {
   localStorage.setItem('revengeData', JSON.stringify(revengeData));
 }
 
-// Function to load revenge data from localStorage
+// Function to load only revenge data from localStorage
 function loadRevengeData() {
   const savedData = localStorage.getItem('revengeData');
   if (!savedData) return;
@@ -130,33 +128,6 @@ function loadRevengeData() {
 
       revengeFolder.querySelector('.folder-content').appendChild(revengeItem);
     });
-  });
-}
-
-// Function to refresh revenge ideas
-function refreshRevengeIdeas() {
-  const ideas = [
-    'Send a fake invitation to a party that they won’t be able to attend.',
-    'Create a fake social media account and follow them with ridiculous comments.',
-    'Leave annoying but subtle notes around their office or home.',
-    'Organize an embarrassing surprise for them.',
-    'Challenge them to a game and then purposely lose.',
-  ];
-
-  const randomIdeas = [];
-  while (randomIdeas.length < 5) {
-    const randomIdea = ideas[Math.floor(Math.random() * ideas.length)];
-    if (!randomIdeas.includes(randomIdea)) {
-      randomIdeas.push(randomIdea);
-    }
-  }
-
-  const ideasList = document.getElementById('revenge-ideas-list');
-  ideasList.innerHTML = '';
-  randomIdeas.forEach(function (idea) {
-    const listItem = document.createElement('li');
-    listItem.textContent = idea;
-    ideasList.appendChild(listItem);
   });
 }
 

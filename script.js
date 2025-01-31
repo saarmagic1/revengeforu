@@ -28,16 +28,11 @@ document.getElementById('revenge-form').addEventListener('submit', function (eve
   // Append the new revenge item to the folder
   revengeFolder.querySelector('.folder-content').appendChild(revengeItem);
 
-  // Save to local storage
+  // Save to localStorage
   saveRevengeData();
 
   // Manually clear the form after adding the revenge
   document.getElementById('revenge-form').reset();
-
-  // Ensure that the form is completely cleared
-  document.getElementById('person-name').value = '';
-  document.getElementById('revenge-plan').value = '';
-  document.getElementById('revenge-reason').value = '';
 });
 
 // Function to save only revenge data to localStorage
@@ -89,5 +84,23 @@ function loadRevengeData() {
   });
 }
 
+// Function to mark a revenge as completed (remove it from the list)
+function markRevengeCompleted(button, personName) {
+  const revengeItem = button.closest('.revenge-item');
+  revengeItem.remove(); // Remove the revenge item
+
+  // If no revenge items remain for this person, remove the folder
+  const folder = revengeItem.closest('.revenge-folder');
+  if (folder.querySelectorAll('.revenge-item').length === 0) {
+    folder.remove();
+  }
+
+  // Save updated data to localStorage
+  saveRevengeData();
+}
+
 // Initialize the revenge ideas when the page loads
 refreshRevengeIdeas();
+
+// Load saved revenge data from localStorage when the page loads
+window.onload = loadRevengeData;

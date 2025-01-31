@@ -183,5 +183,26 @@
     </div>
 
     <script src="script.js"></script>
+    <script>
+      // Load saved data on page load
+      document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("person-name").value = localStorage.getItem("person-name") || "";
+        document.getElementById("revenge-plan").value = localStorage.getItem("revenge-plan") || "";
+        document.getElementById("revenge-reason").value = localStorage.getItem("revenge-reason") || "";
+      });
+
+      // Save data when user types
+      document.getElementById("person-name").addEventListener("input", () => {
+        localStorage.setItem("person-name", document.getElementById("person-name").value);
+      });
+
+      document.getElementById("revenge-plan").addEventListener("input", () => {
+        localStorage.setItem("revenge-plan", document.getElementById("revenge-plan").value);
+      });
+
+      document.getElementById("revenge-reason").addEventListener("input", () => {
+        localStorage.setItem("revenge-reason", document.getElementById("revenge-reason").value);
+      });
+    </script>
   </body>
 </html>

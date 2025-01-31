@@ -1,3 +1,8 @@
+// Load stored revenges when the page loads
+document.addEventListener('DOMContentLoaded', function () {
+  loadRevengeData();
+});
+
 // Function to handle form submission and adding new revenge
 document.getElementById('revenge-form').addEventListener('submit', function (event) {
   event.preventDefault(); // Prevent form submission that would reload the page
@@ -13,7 +18,6 @@ document.getElementById('revenge-form').addEventListener('submit', function (eve
   // Check if there is already a folder for this person
   let revengeFolder = document.getElementById(personName);
   if (!revengeFolder) {
-    // If no folder exists for this person, create one
     revengeFolder = createRevengeFolder(personName);
   }
 
@@ -23,13 +27,16 @@ document.getElementById('revenge-form').addEventListener('submit', function (eve
   revengeItem.innerHTML = `
     <p><strong>Revenge Plan:</strong> ${revengePlan}</p>
     <p><strong>Reason:</strong> ${revengeReason || 'No reason provided'}</p>
-    <button onclick="markRevengeCompleted(this)">Mark as Completed</button>
+    <button onclick="markRevengeCompleted(this, '${personName}')">Mark as Completed</button>
   `;
 
   // Append the new revenge item to the folder
   revengeFolder.querySelector('.folder-content').appendChild(revengeItem);
 
-  // Reset the form to allow adding new revenge plans
+  // Save to local storage
+  saveRevengeData();
+
+  // Reset the form
   document.getElementById('revenge-form').reset();
 });
 
@@ -48,14 +55,12 @@ function createRevengeFolder(personName) {
   const folderContent = document.createElement('div');
   folderContent.classList.add('folder-content');
 
-  // Append the header and content to the folder
   folder.appendChild(folderHeader);
   folder.appendChild(folderContent);
 
-  // Append the new folder to the all revenges section
   document.getElementById('revenge-folders').appendChild(folder);
 
-  // Toggle folder visibility when the header is clicked
+  // Toggle folder visibility
   folderHeader.addEventListener('click', function () {
     folderContent.style.display = folderContent.style.display === 'none' ? 'block' : 'none';
   });
@@ -63,16 +68,69 @@ function createRevengeFolder(personName) {
   return folder;
 }
 
-// Function to mark a revenge as completed (remove it from the list)
-function markRevengeCompleted(button) {
+// Function to mark a revenge as completed
+function markRevengeCompleted(button, personName) {
   const revengeItem = button.closest('.revenge-item');
-  revengeItem.remove(); // Remove the revenge item
+  revengeItem.remove();
 
-  // If no revenge items remain for this person, remove the folder
-  const folder = revengeItem.closest('.revenge-folder');
-  if (folder.querySelectorAll('.revenge-item').length === 0) {
-    folder.remove();
+  const folder = document.getElementById(personName);
+  if (folder && folder.querySelectorAll('.revenge-item').length === 0) {
+    folder.remove(); // Remove the folder if empty
   }
+
+  // Update local storage
+  saveRevengeData();
+}
+
+// Function to save revenge data to localStorage
+function saveRevengeData() {
+  const revengeFolders = document.querySelectorAll('.revenge-folder');
+  const revengeData = {};
+
+  revengeFolders.forEach(folder => {
+    const personName = folder.id;
+    const revengeItems = folder.querySelectorAll('.revenge-item');
+
+    if (revengeItems.length === 0) {
+      return; // Don't save empty folders
+    }
+
+    revengeData[personName] = [];
+    revengeItems.forEach(item => {
+      const revengePlan = item.querySelector('p:nth-child(1)').textContent.replace('Revenge Plan: ', '');
+      const revengeReason = item.querySelector('p:nth-child(2)').textContent.replace('Reason: ', '');
+      revengeData[personName].push({ revengePlan, revengeReason });
+    });
+  });
+
+  localStorage.setItem('revengeData', JSON.stringify(revengeData));
+}
+
+// Function to load revenge data from localStorage
+function loadRevengeData() {
+  const savedData = localStorage.getItem('revengeData');
+  if (!savedData) return;
+
+  const revengeData = JSON.parse(savedData);
+
+  Object.keys(revengeData).forEach(personName => {
+    let revengeFolder = document.getElementById(personName);
+    if (!revengeFolder) {
+      revengeFolder = createRevengeFolder(personName);
+    }
+
+    revengeData[personName].forEach(({ revengePlan, revengeReason }) => {
+      const revengeItem = document.createElement('div');
+      revengeItem.classList.add('revenge-item');
+      revengeItem.innerHTML = `
+        <p><strong>Revenge Plan:</strong> ${revengePlan}</p>
+        <p><strong>Reason:</strong> ${revengeReason || 'No reason provided'}</p>
+        <button onclick="markRevengeCompleted(this, '${personName}')">Mark as Completed</button>
+      `;
+
+      revengeFolder.querySelector('.folder-content').appendChild(revengeItem);
+    });
+  });
 }
 
 // Function to refresh revenge ideas
@@ -93,9 +151,8 @@ function refreshRevengeIdeas() {
     }
   }
 
-  // Update the list with new random ideas
   const ideasList = document.getElementById('revenge-ideas-list');
-  ideasList.innerHTML = ''; // Clear current list
+  ideasList.innerHTML = '';
   randomIdeas.forEach(function (idea) {
     const listItem = document.createElement('li');
     listItem.textContent = idea;

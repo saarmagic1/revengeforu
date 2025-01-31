@@ -1,3 +1,8 @@
+// Load stored revenges when the page loads
+document.addEventListener('DOMContentLoaded', function () {
+  loadRevengeData();
+});
+
 // Function to handle form submission and adding new revenge
 document.getElementById('revenge-form').addEventListener('submit', function (event) {
   event.preventDefault(); // Prevent form submission that would reload the page
@@ -28,12 +33,54 @@ document.getElementById('revenge-form').addEventListener('submit', function (eve
   // Append the new revenge item to the folder
   revengeFolder.querySelector('.folder-content').appendChild(revengeItem);
 
-  // Save to localStorage
+  // Save to local storage
   saveRevengeData();
 
-  // Manually clear the form after adding the revenge
+  // Reset the form
   document.getElementById('revenge-form').reset();
 });
+
+// Function to create a revenge folder for a person
+function createRevengeFolder(personName) {
+  const folder = document.createElement('div');
+  folder.classList.add('revenge-folder');
+  folder.id = personName;
+
+  // Add folder header with person's name
+  const folderHeader = document.createElement('div');
+  folderHeader.classList.add('folder-header');
+  folderHeader.innerText = personName;
+
+  // Create the folder content area to hold the revenge items
+  const folderContent = document.createElement('div');
+  folderContent.classList.add('folder-content');
+
+  folder.appendChild(folderHeader);
+  folder.appendChild(folderContent);
+
+  document.getElementById('revenge-folders').appendChild(folder);
+
+  // Toggle folder visibility
+  folderHeader.addEventListener('click', function () {
+    folderContent.style.display = folderContent.style.display === 'none' ? 'block' : 'none';
+  });
+
+  return folder;
+}
+
+// Function to mark a revenge as completed
+function markRevengeCompleted(button, personName) {
+  const revengeItem = button.closest('.revenge-item');
+  revengeItem.remove();
+
+  const folder = document.getElementById(personName);
+  if (folder && folder.querySelectorAll('.revenge-item').length === 0) {
+    folder.remove(); // Remove the folder if empty
+  }
+
+  // Update local storage
+  saveRevengeData();
+}
 
 // Function to save only revenge data to localStorage
 function saveRevengeData() {
@@ -84,23 +131,5 @@ function loadRevengeData() {
   });
 }
 
-// Function to mark a revenge as completed (remove it from the list)
-function markRevengeCompleted(button, personName) {
-  const revengeItem = button.closest('.revenge-item');
-  revengeItem.remove(); // Remove the revenge item
-
-  // If no revenge items remain for this person, remove the folder
-  const folder = revengeItem.closest('.revenge-folder');
-  if (folder.querySelectorAll('.revenge-item').length === 0) {
-    folder.remove();
-  }
-
-  // Save updated data to localStorage
-  saveRevengeData();
-}
-
 // Initialize the revenge ideas when the page loads
 refreshRevengeIdeas();
-
-// Load saved revenge data from localStorage when the page loads
-window.onload = loadRevengeData;
